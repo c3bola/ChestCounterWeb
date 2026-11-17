@@ -1,0 +1,16 @@
+:root {
+  --font-body: "Roboto", Arial, sans-serif;
+  --font-display: "Burbank", Impact, "Arial Narrow", sans-serif;
+  --navy: #05284b;
+  --ink: #071d3b;
+  --gold: #ffbc00;
+  --purple: #6c2edf;
+  --sand: #f4dfbb;
+  --cream: #fffaf0;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --radius-card: 17px;
+  --radius-pill: 9999px;
+  --shadow: 0 4px 10px #684a2d24, 0 1px 2px #684a2d30;
+}

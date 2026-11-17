@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap');
+
+@font-face {
+  font-family: "Burbank";
+  src: url('/assets/fonts/burbarkfont.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: var(--sand);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { 
+  margin: 0; 
+  min-width: 320px; 
+  /* Adiciona a textura de mapa na página inteira */
+  background-color: #f5dfbd;
+  background-image: url('/assets/image/background.webp');
+  background-repeat: repeat;
+  background-position: center top;
+  background-size: 768px 512px; 
+}
+button, a { font: inherit; }
+a { color: inherit; }
+button:focus-visible, a:focus-visible { outline: 3px solid #21b7eb; outline-offset: 4px; }
+svg { flex-shrink: 0; }
+h1, h2, h3, p { margin: 0; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
