@@ -1,7 +1,7 @@
 import { Activity, ArrowUpRight, ChevronLeft, ChevronRight, Gem, Search, Users } from 'lucide-react'
-import { Link } from 'react-router-dom'
-import { Avatar } from '../../common/Avatar/Avatar'
 import { Card } from '../../common/Card/Card'
+import { PlayerProfileLink } from '../../common/PlayerProfileLink/PlayerProfileLink'
+import { PlayerSkinAvatar } from '../../common/PlayerSkinAvatar/PlayerSkinAvatar'
 import { ChestIcon } from '../ChestIcon/ChestIcon'
 import { PlayerCard } from '../PlayerCard/PlayerCard'
 import type { AnalyticsScreenPlayer } from '../../../services/api/analytics'
@@ -57,14 +57,14 @@ export function AnalyticsPlayerResults({
               return (
                 <PlayerCard key={player.player_id}>
                   <span className={`player-position rank-${player.position}`}>{player.position}</span>
-                  <Avatar initials={name.slice(0, 2).toUpperCase() || '??'} color="teal" alt={name} />
+                  <PlayerSkinAvatar playerId={player.player_id} color="teal" alt={`Skin de ${name}`} />
                   <strong className="player-name">{name}</strong>
                   <span className="player-result-metric metric-interactions"><ChestIcon /> {numberFormatter.format(player.container_interactions_observed)}</span>
                   <span className="player-result-metric metric-treasures"><Gem /> {numberFormatter.format(player.treasure_events_observed)}</span>
                   <span className="player-result-metric metric-matches"><Activity /> {numberFormatter.format(player.matches_played)}</span>
-                  <Link className="profile-link" to={`/jogadores/${player.player_id}`} state={{ player }}>
+                  <PlayerProfileLink className="profile-link" playerId={player.player_id} state={{ player }}>
                     Ver perfil <ArrowUpRight size={16} aria-hidden="true" />
-                  </Link>
+                  </PlayerProfileLink>
                 </PlayerCard>
               )
             })}

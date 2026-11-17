@@ -1,7 +1,7 @@
 import { Trophy } from 'lucide-react'
-import { Avatar } from '../../../components/common/Avatar/Avatar'
 import { Badge } from '../../../components/common/Badge/Badge'
 import { Card } from '../../../components/common/Card/Card'
+import { PlayerSkinAvatar } from '../../../components/common/PlayerSkinAvatar/PlayerSkinAvatar'
 import { PlayerCard } from '../../../components/data-display/PlayerCard/PlayerCard'
 import { RankingTable } from '../../../components/data-display/RankingTable/RankingTable'
 import { ChestIcon } from '../../../components/data-display/ChestIcon/ChestIcon'
@@ -22,7 +22,7 @@ export function ChestRanking({ items }: { items: AnalyticsScreenPlayer[] }) {
             return (
               <PlayerCard key={player.player_id}>
                 <Badge className={`rank rank-${player.position}`}>{player.position}º</Badge>
-                <Avatar initials={name.slice(0, 2).toUpperCase() || '??'} color="coral" alt={name} />
+                <PlayerSkinAvatar playerId={player.player_id} color="coral" alt={`Skin de ${name}`} />
                 <strong className="player-name">{name}</strong>
                 <ChestIcon className="row-chest" />
                 <strong className="player-score">{numberFormatter.format(player.container_interactions_observed)}</strong>
