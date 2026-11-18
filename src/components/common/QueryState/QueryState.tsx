@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { Loading } from '../Loading/Loading'
+import { EmptyState } from '../EmptyState/EmptyState'
 
 type Props = {
   isLoading: boolean
@@ -7,6 +8,7 @@ type Props = {
   isEmpty: boolean
   onRetry: () => void
   emptyMessage: string
+  loadingFallback?: ReactNode
   children: ReactNode
 }
 
@@ -16,10 +18,11 @@ export function QueryState({
   isEmpty,
   onRetry,
   emptyMessage,
+  loadingFallback,
   children,
 }: Props) {
   if (isLoading) {
-    return <Loading label="Carregando dados..." />
+    return loadingFallback ?? <Loading label="Carregando dados..." />
   }
 
   if (error) {
@@ -32,7 +35,7 @@ export function QueryState({
   }
 
   if (isEmpty) {
-    return <p className="query-state" role="status">{emptyMessage}</p>
+    return <EmptyState title="Sem dados para exibir" description={emptyMessage} />
   }
 
   return children

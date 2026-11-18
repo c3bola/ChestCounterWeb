@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import {
   getPlayerAnalyticsHistory,
   getPlayerAnalyticsSummary,
@@ -22,6 +22,7 @@ export function usePlayerAnalyticsHistory(playerId: number, page: number) {
     queryFn: () => getPlayerAnalyticsHistory(playerId, page),
     enabled: playerId > 0,
     staleTime: 60_000,
+    placeholderData: keepPreviousData,
     retry: false,
   })
 }
@@ -32,6 +33,7 @@ export function usePlayerAnalyticsTeammates(playerId: number, page: number) {
     queryFn: () => getPlayerAnalyticsTeammates(playerId, page),
     enabled: playerId > 0,
     staleTime: 60_000,
+    placeholderData: keepPreviousData,
     retry: false,
   })
 }
@@ -42,6 +44,7 @@ export function usePlayerAnalyticsTreasures(playerId: number, page: number) {
     queryFn: () => getPlayerAnalyticsTreasures(playerId, page),
     enabled: playerId > 0,
     staleTime: 60_000,
+    placeholderData: keepPreviousData,
     retry: false,
   })
 }

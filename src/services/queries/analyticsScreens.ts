@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import {
   getAnalyticsScreenPlayers,
   getAnalyticsScreenStatistics,
@@ -12,6 +12,7 @@ export function useAnalyticsScreenStatistics() {
     queryKey: ['analytics', 'screen', 'statistics'],
     queryFn: getAnalyticsScreenStatistics,
     staleTime: 60_000,
+    placeholderData: keepPreviousData,
     retry: false,
   })
 }
@@ -35,6 +36,7 @@ export function useAnalyticsScreenPlayers(options: {
       pageSize,
     }),
     staleTime: 60_000,
+    placeholderData: keepPreviousData,
     retry: false,
   })
 }

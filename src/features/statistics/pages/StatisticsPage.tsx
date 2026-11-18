@@ -7,6 +7,7 @@ import { Container } from '../../../components/layout/Container/Container'
 import { assets } from '../../../constants/assets'
 import { useAnalyticsScreenStatistics } from '../../../services/queries/analyticsScreens'
 import { numberFormatter } from '../../../utils/formatters'
+import { StatisticsLoadingSkeleton } from '../../../components/common/Skeleton/LoadingSkeletons'
 
 export function StatisticsPage() {
   const statistics = useAnalyticsScreenStatistics()
@@ -26,6 +27,7 @@ export function StatisticsPage() {
         isEmpty={!statistics.data}
         onRetry={() => void statistics.refetch()}
         emptyMessage="A API não retornou estatísticas."
+        loadingFallback={<StatisticsLoadingSkeleton />}
       >
         {statistics.data && (
           <>

@@ -10,6 +10,7 @@ import { PageHero } from '../../../components/layout/PageHero/PageHero'
 import { Container } from '../../../components/layout/Container/Container'
 import { assets } from '../../../constants/assets'
 import { analyticsScreenPageSize } from '../../../services/queries/analyticsScreens'
+import { DirectoryLoadingSkeleton } from '../../../components/common/Skeleton/LoadingSkeletons'
 
 const sortOptions = [
   { value: 'container_interactions_observed', label: 'Interações observadas' },
@@ -74,6 +75,7 @@ export function PlayersPage() {
         isEmpty={!players.data}
         onRetry={() => void players.refetch()}
         emptyMessage="A API não retornou jogadores."
+        loadingFallback={<DirectoryLoadingSkeleton />}
       >
         {players.data && (
           <>
@@ -102,6 +104,9 @@ export function PlayersPage() {
                   onPageChange={changePage}
                 />
               </div>
+              {players.isFetching && (
+                <p className="query-refresh-status" role="status">Atualizando resultados...</p>
+              )}
             </Container>
           </>
         )}

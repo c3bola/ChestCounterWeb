@@ -7,6 +7,7 @@ import { CommunityTotals } from '../../../components/data-display/CommunityTotal
 import { HeroSection } from '../components/HeroSection'
 import { QuickAccess } from '../components/QuickAccess'
 import { RecentActivities } from '../components/RecentActivities'
+import { DashboardLoadingSkeleton } from '../../../components/common/Skeleton/LoadingSkeletons'
 
 export function DashboardPage() {
   const { home } = useDashboardQueries()
@@ -21,6 +22,7 @@ export function DashboardPage() {
         isEmpty={!home.data}
         onRetry={() => void home.refetch()}
         emptyMessage="A API não retornou dados para a página inicial."
+        loadingFallback={<DashboardLoadingSkeleton />}
       >
         {home.data && (
           <>

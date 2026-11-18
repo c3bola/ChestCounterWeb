@@ -23,6 +23,10 @@ import type { PlayerAnalyticsPage } from '../../../services/api/playerAnalytics'
 import { numberFormatter } from '../../../utils/formatters'
 import { containerCategoryLabel } from '../utils/containerCategoryLabel'
 import { playlistLabel } from '../utils/playlistLabel'
+import {
+  ProfileSectionSkeleton,
+  ProfileSummarySkeleton,
+} from '../../../components/common/Skeleton/LoadingSkeletons'
 
 const dateFormatter = new Intl.DateTimeFormat('pt-BR', { dateStyle: 'medium' })
 const dateTimeFormatter = new Intl.DateTimeFormat('pt-BR', {
@@ -50,24 +54,23 @@ function formatMetric(value: number | null, decimals = false): string {
 function SectionState({
   query,
   emptyMessage,
+  loadingFallback,
   children,
 }: {
   query: {
     isPending: boolean
     error: Error | null
+    data?: unknown
     refetch: () => Promise<unknown>
   }
   emptyMessage: string
+  loadingFallback?: React.ReactNode
   children: React.ReactNode
 }) {
   if (query.isPending) {
-    return (
-      <div className="profile-skeleton" role="status" aria-label="Carregando dados">
-        <span /><span /><span />
-      </div>
-    )
+    return loadingFallback ?? <ProfileSectionSkeleton kind="table" />
   }
-  if (query.error) {
+  if (query.error && !query.data) {
     return (
       <div className="profile-section-state profile-section-error" role="alert">
         <p>Não foi possível carregar esta seção. {query.error.message}</p>
@@ -199,6 +202,7 @@ export function PlayerDetailsPage() {
         image={assets.headerPlayers}
         title={name}
         description="Resumo das métricas observadas disponibilizadas pela API."
+        loadingTitle={summary.isPending}
       />
       <Container className="player-analytics-content">
         <div className="player-profile-toolbar">
@@ -215,7 +219,7 @@ export function PlayerDetailsPage() {
         </div>
 
         <section aria-label="Resumo do jogador">
-          <SectionState query={summary} emptyMessage="Não há dados de resumo para este jogador.">
+          <SectionState query={summary} emptyMessage="Não há dados de resumo para este jogador." loadingFallback={<ProfileSummarySkeleton />}>
             {summary.data ? (
               <Card className="player-summary-card">
                 <header className="profile-summary-heading">
@@ -262,7 +266,7 @@ export function PlayerDetailsPage() {
           <section aria-labelledby="player-evolution-title">
             <Card className="profile-panel">
               <SectionHeading id="player-evolution-title" icon="chart" title="Evolução diária" description="Interações observadas por data da partida" />
-              <SectionState query={summary} emptyMessage="Não há registros diários para este jogador.">
+              <SectionState query={summary} emptyMessage="Não há registros diários para este jogador." loadingFallback={<ProfileSectionSkeleton kind="chart" />}>
                 {summary.data && daily.length > 0 ? (
                   daily.some((item) => item.container_interactions_observed !== null) ? (
                     <div className="profile-chart" role="list" aria-label="Interações observadas por dia">
@@ -289,7 +293,7 @@ export function PlayerDetailsPage() {
           <section aria-labelledby="player-categories-title">
             <Card className="profile-panel">
               <SectionHeading id="player-categories-title" icon="chest" title="Categorias de contêiner" description="Classificação conforme retornada pela API" />
-              <SectionState query={summary} emptyMessage="Não há categorias de contêiner para exibir.">
+              <SectionState query={summary} emptyMessage="Não há categorias de contêiner para exibir." loadingFallback={<ProfileSectionSkeleton kind="categories" />}>
                 {summary.data && summary.data.container_categories.length > 0 ? (
                   <>
                     <p className="profile-total">
@@ -319,7 +323,7 @@ export function PlayerDetailsPage() {
           <section aria-labelledby="player-playlists-title">
             <Card className="profile-panel">
               <SectionHeading id="player-playlists-title" icon="gamepad" title="Partidas por modo" description="Métricas agregadas por playlist reportada" />
-              <SectionState query={summary} emptyMessage="Não há dados por playlist para exibir.">
+              <SectionState query={summary} emptyMessage="Não há dados por playlist para exibir." loadingFallback={<ProfileSectionSkeleton kind="table" />}>
                 {summary.data && summary.data.playlists.length > 0 ? (
                   <>
                     <div className="profile-table-wrap">
@@ -352,7 +356,7 @@ export function PlayerDetailsPage() {
           <Card className="profile-panel">
             <SectionHeading id="player-history-title" icon="calendar" title="Histórico de partidas" description="Dados individuais paginados retornados pela API"
               detail={history.data && <strong>{numberFormatter.format(history.data.total)} partidas</strong>} />
-            <SectionState query={history} emptyMessage="Não há partidas registradas para este jogador.">
+            <SectionState query={history} emptyMessage="Não há partidas registradas para este jogador." loadingFallback={<ProfileSectionSkeleton kind="table" />}>
               {history.data && history.data.items.length > 0 ? (
                 <>
                   <div className="profile-table-wrap">
@@ -384,7 +388,7 @@ export function PlayerDetailsPage() {
             <Card className="profile-panel">
               <SectionHeading id="player-teammates-title" icon="team" title="Companheiros de equipe" description="Identidades vinculadas a partidas com equipe registrada"
                 detail={teammates.data && <strong>{numberFormatter.format(teammates.data.total)} jogadores</strong>} />
-              <SectionState query={teammates} emptyMessage="Não há companheiros identificados nas partidas disponíveis.">
+              <SectionState query={teammates} emptyMessage="Não há companheiros identificados nas partidas disponíveis." loadingFallback={<ProfileSectionSkeleton kind="teammates" />}>
                 {teammates.data && teammates.data.items.length > 0 ? (
                   <>
                     <ul className="profile-teammates">
@@ -418,7 +422,7 @@ export function PlayerDetailsPage() {
             <Card className="profile-panel">
               <SectionHeading id="player-treasures-title" icon="gem" title="Eventos de tesouro" description="Eventos atribuídos diretamente ao jogador, sem classificação de recompensa"
                 detail={treasures.data && <strong>{numberFormatter.format(treasures.data.total)} eventos</strong>} />
-              <SectionState query={treasures} emptyMessage="Não há eventos de tesouro atribuídos diretamente a este jogador.">
+              <SectionState query={treasures} emptyMessage="Não há eventos de tesouro atribuídos diretamente a este jogador." loadingFallback={<ProfileSectionSkeleton kind="table" />}>
                 {treasures.data && treasures.data.items.length > 0 ? (
                   <>
                     <div className="profile-table-wrap">
